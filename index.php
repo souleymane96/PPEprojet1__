@@ -19,7 +19,10 @@ switch($uc){
 	case 'etatFrais' :{
 		include("controleurs/c_etatFrais.php");break; 
 	}
+        
+ 
 }
+echo "toto" ;
 include("vues/v_pied.php") ;
 ?>
 
