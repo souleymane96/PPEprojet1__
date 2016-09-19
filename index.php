@@ -22,7 +22,6 @@ switch($uc){
         
  
 }
-echo "toto" ;
 include("vues/v_pied.php") ;
 ?>
 
