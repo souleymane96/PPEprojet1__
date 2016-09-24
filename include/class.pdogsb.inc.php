@@ -54,9 +54,10 @@ class PdoGsb{
  * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
 */
 	public function getInfosVisiteur($login, $mdp){
-		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
-		where visiteur.login='$login' and visiteur.mdp='$mdp'";
-		$rs = PdoGsb::$monPdo->query($req);
+		$req = "select utilisateur.id as id, utilisateur.nom as nom, utilisateur.prenom as prenom, utilisateur.type as type from utilisateur 
+		where utilisateur.login=:login and utilisateur.mdp=:mdp";
+		$rs = PdoGsb::$monPdo->prepare($req);
+        $rs->execute(['login' => $login, 'mdp' => $mdp]);
 		$ligne = $rs->fetch();
 		return $ligne;
 	}
@@ -277,8 +278,8 @@ class PdoGsb{
  * @return un tableau avec des champs de jointure entre une fiche de frais et la ligne d'état 
 */	
 	public function getLesInfosFicheFrais($idVisiteur,$mois){
-		$req = "select ficheFrais.idEtat as idEtat, ficheFrais.dateModif as dateModif, ficheFrais.nbJustificatifs as nbJustificatifs, 
-			ficheFrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id 
+		$req = "select fichefrais.idetat as idEtat, fichefrais.datemodif as dateModif, fichefrais.nbjustificatifs as nbJustificatifs, 
+			fichefrais.montantvalide as montantValide, etat.libelle as libEtat from  fichefrais inner join etat on fichefrais.idetat = etat.id 
 			where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		$res = PdoGsb::$monPdo->query($req);
 		$laLigne = $res->fetch();
