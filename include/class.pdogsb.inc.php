@@ -51,7 +51,7 @@ class PdoGsb{
  
  * @param $login 
  * @param $mdp
- * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
+ * @return l'id, le nom, le prénom et le type sous la forme d'un tableau associatif
 */
 	public function getInfosVisiteur($login, $mdp){
 		$req = "select utilisateur.id as id, utilisateur.nom as nom, utilisateur.prenom as prenom, utilisateur.type as type from utilisateur 
@@ -61,6 +61,28 @@ class PdoGsb{
 		$ligne = $rs->fetch();
 		return $ligne;
 	}
+
+    /**
+     * Retourne tous les visiteurs
+     * @return array
+     */
+    public function getVisiteurs(){
+	    $req = "SELECT utilisateur.id, utilisateur.nom, utilisateur.prenom FROM utilisateur WHERE utilisateur.type = 'visiteur'";
+        $rs = self::$monPdo->query($req);
+        return $rs->fetchAll();
+    }
+
+    /**
+     * Retourne le nom et le prénom du visiteur avec l'id $id
+     * @param $id
+     * @return array
+     */
+    public function getVisiteur($id){
+        $req = "SELECT utilisateur.nom, utilisateur.prenom FROM utilisateur WHERE utilisateur.id = :id";
+        $rs = self::$monPdo->prepare($req);
+        $rs->execute(['id' => $id]);
+        return $rs->fetch();
+    }
 
 /**
  * Retourne sous forme d'un tableau associatif toutes les lignes de frais hors forfait

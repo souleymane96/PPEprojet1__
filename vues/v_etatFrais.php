@@ -1,5 +1,5 @@
-﻿
-<h3>Fiche de frais du mois <?php echo $numMois."-".$numAnnee?> : 
+﻿<div style=" <?php echo (isset($visiteur) ? "margin-left: 17%;" : ''); ?>">
+<h3>Fiche de frais du mois <?php echo $numMois."-".$numAnnee?> <?php echo (isset($visiteur) ? $visiteur : ''); ?>:
     </h3>
     <div class="encadre">
     <p>
@@ -58,7 +58,7 @@
     </table>
   </div>
   </div>
- 
+ </div>
 
 
 
