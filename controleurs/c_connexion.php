@@ -21,9 +21,13 @@ switch($action){
 			$id = $utilisateur['id'];
 			$nom =  $utilisateur['nom'];
 			$prenom = $utilisateur['prenom'];
-            $type = $utilisateur['type'];
+                        $type = $utilisateur['type'];
 			connecter($id,$nom,$prenom, $type);
-			include("vues/v_sommaire.php");
+                        include("vues/v_sommaire.php");
+                        if($type === "comptable"){
+                            header('location:index.php?uc=gererValidationFrais&action=demandeValiderFrais');
+                            die();
+                        }
 		}
 		break;
 	}

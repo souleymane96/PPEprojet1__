@@ -107,6 +107,11 @@ class PdoGsb{
 		}
 		return $lesLignes; 
 	}
+        
+        public function getLesMoisNonValides(){
+            $req = "SELECT mois FROM fichefrais WHERE idetat = 'CR'";
+            return PdoGsb::$monPdo->query($req)->fetchAll();
+        }
 /**
  * Retourne le nombre de justificatif d'un visiteur pour un mois donné
  
