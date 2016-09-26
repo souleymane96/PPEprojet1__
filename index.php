@@ -21,8 +21,9 @@ switch($uc){
 	}
 
         case 'gererValidationFrais':{
-            include("controleurs/c_gererValidationFrais.php"); break;
+            include("controleurs/c_gererValidationFrais.php");break;
         }
+        
  
 }
 include("vues/v_pied.php") ;

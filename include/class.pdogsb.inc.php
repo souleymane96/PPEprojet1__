@@ -325,5 +325,14 @@ class PdoGsb{
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
+        public function getVisiteurFraisNonValides($anneeMois){
+            
+           $req = "SELECT DISTINCT nom,prenom,id FROM fichefrais LEFT JOIN utilisateur ON utilisateur.id = idvisiteur WHERE idetat ='CR' AND mois = '$anneeMois'";
+           $fichefrais = PdoGsb::$monPdo->query($req);
+           
+           return $fichefrais->fetchAll(PDO::FETCH_OBJ);
+            
+            
+        }
 }
 ?>

@@ -18,9 +18,7 @@ switch($action){
             if(!in_array($moisCourant, $aValider[$anneeCourant])){
                 $aValider[$anneeCourant][] = $moisCourant;
             }
-            
-        }
-        
+        }      
         include("vues/v_listeMoisComptable.php");
         //$lesVisiteurs = $pdo->getVisiteurs();
         //$lesMois=$pdo->getLesMoisDisponibles($idUtilisateur);
@@ -32,6 +30,7 @@ switch($action){
         //include("vues/v_listeMoisComptable.php");
         break;
     }
+        
     
     case "voirEtatFrais": {
         $leMois = $_POST['lstMois'];
@@ -51,8 +50,13 @@ switch($action){
         include("vues/v_etatFrais.php");
     }
     
-    case "voirFrais":{
-        var_dump($_POST);
+    case "listeVisiteurDate":{
+        
+        $visiteurs = $pdo->getVisiteurFraisNonValides($_POST['lstmois']);
+        
+        include "vues/v_listeVisiteurDate.php";
+        
         break;
     }
+   
 }

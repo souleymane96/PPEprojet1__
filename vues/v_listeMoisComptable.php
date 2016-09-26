@@ -1,6 +1,6 @@
 <div id="contenu">
     <h3>Liste des mois avec des fiches de frais à valider</h3>
-    <form method="POST" action="index.php?uc=gererValidationFrais&action=voirFrais">
+    <form method="POST" action="index.php?uc=gererValidationFrais&action=listeVisiteurDate">
         <label for="lstMois">Mois :</label>
         <select name="lstmois" id="lstMois">
         <?php foreach($aValider as $annee => $mois): ?>
