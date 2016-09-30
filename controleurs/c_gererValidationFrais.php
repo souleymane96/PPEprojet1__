@@ -5,6 +5,7 @@ $idUtilisateur = $_SESSION['idUtilisateur'];
 switch($action){
     
     case "demandeValiderFrais": {
+        $part = isset($_GET['part']) ? $_GET['part'] : '1';
         $liste_mois = $pdo->getLesMoisNonValides();
         $aValider = [];
         $moisAValider = [];
@@ -18,7 +19,15 @@ switch($action){
             if(!in_array($moisCourant, $aValider[$anneeCourant])){
                 $aValider[$anneeCourant][] = $moisCourant;
             }
-        }      
+        }
+        if($part === "2"){
+            $visiteurs = $pdo->getVisiteursParDate($_GET['lstmois']);
+        }
+        if(isset($_GET['lstvisiteurs'])){
+            $afficherFiche = true;
+            $fiche["forfait"] = $pdo->getLesFraisForfait($_GET['lstvisiteurs'], $_GET['lstmois']);
+            $fiche["horsForfait"] = $pdo->getLesFraisHorsForfait($_GET['lstvisiteurs'], $_GET['lstmois']);
+        }
         include("vues/v_listeMoisComptable.php");
         //$lesVisiteurs = $pdo->getVisiteurs();
         //$lesMois=$pdo->getLesMoisDisponibles($idUtilisateur);
@@ -30,7 +39,12 @@ switch($action){
         //include("vues/v_listeMoisComptable.php");
         break;
     }
-        
+
+    case "actualiserFrais": {
+        $pdo->majFraisForfait($_POST['idvisiteur'], $_POST['mois'], $_POST['frais']);
+        header("location:index.php?uc=gererValidationFrais&action=demandeValiderFrais&part=2&lstmois={$_POST['mois']}&lstvisiteurs={$_POST['idvisiteur']}");
+        break;
+    }
     
     case "voirEtatFrais": {
         $leMois = $_POST['lstMois'];

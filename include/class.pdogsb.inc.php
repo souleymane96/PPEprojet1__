@@ -84,6 +84,15 @@ class PdoGsb{
         return $rs->fetch();
     }
 
+    public function getVisiteursParDate($date){
+        $req = "SELECT id, nom, prenom FROM utilisateur 
+                LEFT JOIN fichefrais ON fichefrais.idvisiteur = utilisateur.id 
+                WHERE idetat = 'CR' AND mois = :date";
+        $rs = self::$monPdo->prepare($req);
+        $rs->execute(['date' => $date]);
+        return $rs->fetchAll(PDO::FETCH_OBJ);
+    }
+
 /**
  * Retourne sous forme d'un tableau associatif toutes les lignes de frais hors forfait
  * concernées par les deux arguments
@@ -325,14 +334,20 @@ class PdoGsb{
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
-        public function getVisiteurFraisNonValides($anneeMois){
+
+    /**
+     * Retourne l'id, le nom et le prenom d'un visiteur dont sa fiche de frais n'est pas valider du mois passé en paramètre
+     * @param $anneeMois
+     * @return mixed
+     */
+    public function getVisiteurFraisNonValides($anneeMois){
             
-           $req = "SELECT DISTINCT nom,prenom,id FROM fichefrais LEFT JOIN utilisateur ON utilisateur.id = idvisiteur WHERE idetat ='CR' AND mois = '$anneeMois'";
-           $fichefrais = PdoGsb::$monPdo->query($req);
+        $req = "SELECT DISTINCT nom,prenom,id FROM fichefrais LEFT JOIN utilisateur ON utilisateur.id = idvisiteur WHERE idetat ='CR' AND mois = '$anneeMois'";
+        $fichefrais = PdoGsb::$monPdo->query($req);
            
-           return $fichefrais->fetchAll(PDO::FETCH_OBJ);
+        return $fichefrais->fetchAll(PDO::FETCH_OBJ);
             
             
-        }
+    }
 }
 ?>
