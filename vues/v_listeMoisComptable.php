@@ -5,7 +5,7 @@
         <select name="lstmois" id="lstMois">
         <?php foreach($aValider as $annee => $mois): ?>
             <?php foreach($mois as $item): ?>
-            <option value="<?php echo $annee . $item ?>" <?php echo (isset($_POST['lstmois']) && $_POST['lstmois'] == $annee . $item) ? 'selected': ''; ?>><?php echo $item . " / " . $annee; ?></option>
+            <option value="<?php echo $annee . $item ?>" <?php echo (isset($_GET['lstmois']) && $_GET['lstmois'] == $annee . $item) ? 'selected': ''; ?>><?php echo $item . " / " . $annee; ?></option>
             <?php endforeach; ?>
         <?php endforeach; ?>
         </select>
