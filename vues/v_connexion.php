@@ -1,6 +1,11 @@
 ﻿<div id="contenu">
       <h2>Identification utilisateur</h2>
 
+      <?php if (isset($mdp)){
+          
+          echo $mdp;
+      }
+      ?>
 
 <form method="POST" action="index.php?uc=connexion&action=valideConnexion">
    
@@ -15,6 +20,7 @@
       </p>
          <input type="submit" value="Valider" name="valider">
          <input type="reset" value="Annuler" name="annuler"> 
+         
       </p>
 </form>
 

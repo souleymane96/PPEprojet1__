@@ -10,8 +10,12 @@ switch($action){
 	}
 	case 'valideConnexion':{
 		$login = $_POST['login'];
-		$mdp = $_POST['mdp'];
+		$mdp1= sha1($_POST['mdp']);
+                
+                $mdp = substr($mdp1,0,20);
+                
 		$utilisateur = $pdo->getInfosVisiteur($login,$mdp);
+                
 		if(!is_array($utilisateur)){
 			ajouterErreur("Login ou mot de passe incorrect");
 			include("vues/v_erreurs.php");
