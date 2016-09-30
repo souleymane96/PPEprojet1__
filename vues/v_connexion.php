@@ -1,6 +1,12 @@
 ﻿<div id="contenu">
       <h2>Identification utilisateur</h2>
 
+      <?php if (isset($mdp)){
+          
+          echo $mdp;
+      }
+      ?>
+
 <form method="POST" action="index.php?uc=connexion&action=valideConnexion">
    
     

@@ -9,10 +9,12 @@ switch($action){
 		break;
 	}
 	case 'valideConnexion':{
+            
 		$login = $_POST['login'];
-		$mdp1= sha1($_POST['mdp']);
                 
-                $mdp = substr($mdp1,0,20);
+		$mdp = $_POST['mdp'];
+                
+                $mdp = md5($mdp);
                 
 		$utilisateur = $pdo->getInfosVisiteur($login,$mdp);
                 
@@ -22,6 +24,7 @@ switch($action){
 			include("vues/v_connexion.php");
 		}
 		else{
+                    
 			$id = $utilisateur['id'];
 			$nom =  $utilisateur['nom'];
 			$prenom = $utilisateur['prenom'];
