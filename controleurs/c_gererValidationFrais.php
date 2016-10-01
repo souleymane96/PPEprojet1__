@@ -29,20 +29,38 @@ switch($action){
             $fiche["horsForfait"] = $pdo->getLesFraisHorsForfait($_GET['lstvisiteurs'], $_GET['lstmois']);
         }
         include("vues/v_listeMoisComptable.php");
-        //$lesVisiteurs = $pdo->getVisiteurs();
-        //$lesMois=$pdo->getLesMoisDisponibles($idUtilisateur);
-        // Afin de sélectionner par défaut le dernier mois dans la zone de liste
-        // on demande toutes les clés, et on prend la première,
-        // les mois étant triés décroissants
-        //$lesCles = array_keys( $lesMois );
-        //$moisASelectionner = $lesCles[0];
-        //include("vues/v_listeMoisComptable.php");
         break;
     }
 
     case "actualiserFrais": {
         $pdo->majFraisForfait($_POST['idvisiteur'], $_POST['mois'], $_POST['frais']);
+        setFlash("Informations actualisées");
         header("location:index.php?uc=gererValidationFrais&action=demandeValiderFrais&part=2&lstmois={$_POST['mois']}&lstvisiteurs={$_POST['idvisiteur']}");
+        break;
+    }
+
+    case "supprimerFrais": {
+        $pdo->majFraisHorsForfait($_POST['idfrais']);
+        setFlash("Informations actualisées");
+        header("location:index.php?uc=gererValidationFrais&action=demandeValiderFrais&part=2&lstmois={$_POST['lstmois']}&lstvisiteurs={$_POST['lstvisiteurs']}");
+        break;
+    }
+
+    case "reporterFrais": {
+        $mois = $_POST['lstmois'];
+        $visiteur = $_POST['lstvisiteurs'];
+        $idFrais = $_POST['idfrais'];
+        $libelle = $_POST['libelle'];
+        $montant = $_POST['montant'];
+        $pdo->reporterHorsForfait($idFrais, $visiteur, $mois, $libelle, $montant);
+        header("location:index.php?uc=gererValidationFrais&action=demandeValiderFrais&part=2&lstmois=$mois&lstvisiteurs=$visiteur");
+        break;
+    }
+
+    case "validerFicheFrais": {
+        $pdo->validerFicheFrais($_POST['idvisiteur'], $_POST['mois']);
+        setFlash("La fiche a bien été validé");
+        header('location:index.php?uc=gererValidationFrais&action=demandeValiderFrais');
         break;
     }
     

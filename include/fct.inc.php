@@ -201,4 +201,18 @@ function nbErreurs(){
 	   return count($_REQUEST['erreurs']);
 	}
 }
+
+function setFlash($msg){
+    $_SESSION['Flash']['message'] = $msg;
+}
+
+function flash(){
+    $message = "";
+    if(isset($_SESSION['Flash'])){
+        $message = $_SESSION['Flash']['message'];
+        unset($_SESSION['Flash']);
+    }
+    return $message;
+}
+
 ?>

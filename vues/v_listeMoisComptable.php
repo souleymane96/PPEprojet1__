@@ -30,6 +30,7 @@
             <tr>
                 <th>Libellé</th>
                 <th>Montant</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -37,6 +38,22 @@
                     <tr>
                         <td><?php echo $frais['libelle']; ?></td>
                         <td><?php echo $frais['montant']; ?>€</td>
+                        <td>
+                            <form method="POST" action="index.php?uc=gererValidationFrais&action=reporterFrais">
+                                <button type="submit">Reporter</button>
+                                <input type="hidden" name="lstmois" value="<?php echo $_GET['lstmois']; ?>">
+                                <input type="hidden" name="lstvisiteurs" value="<?php echo $_GET['lstvisiteurs']; ?>">
+                                <input type="hidden" name="idfrais" value="<?php echo $frais['id']; ?>">
+                                <input type="hidden" name="libelle" value="<?php echo $frais['libelle']; ?>">
+                                <input type="hidden" name="montant" value="<?php echo $frais['montant']; ?>">
+                            </form>
+                            <form method="POST" action="index.php?uc=gererValidationFrais&action=supprimerFrais">
+                                <button type="submit">Supprimer</button>
+                                <input type="hidden" name="lstmois" value="<?php echo $_GET['lstmois']; ?>">
+                                <input type="hidden" name="lstvisiteurs" value="<?php echo $_GET['lstvisiteurs']; ?>">
+                                <input type="hidden" name="idfrais" value="<?php echo $frais['id']; ?>">
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -69,8 +86,10 @@
             </tbody>
             </form>
         </table>
-        <form style="text-align: center" method="" action="">
+        <form style="text-align: center" method="POST" action="index.php?uc=gererValidationFrais&action=validerFicheFrais">
             <p><button type="submit">Valider la fiche</button></p>
+            <input type="hidden" name="idvisiteur" value="<?php echo $_GET['lstvisiteurs']; ?>">
+            <input type="hidden" name="mois" value="<?php echo $_GET['lstmois']; ?>">
         </form>
     <?php endif; ?>
 </div>

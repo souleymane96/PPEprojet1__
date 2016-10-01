@@ -27,7 +27,8 @@ class PdoGsb{
  * pour toutes les méthodes de la classe
  */				
 	private function __construct(){
-    	PdoGsb::$monPdo = new PDO(PdoGsb::$serveur.';'.PdoGsb::$bdd, PdoGsb::$user, PdoGsb::$mdp); 
+    	PdoGsb::$monPdo = new PDO(PdoGsb::$serveur.';'.PdoGsb::$bdd, PdoGsb::$user, PdoGsb::$mdp);
+        PdoGsb::$monPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		PdoGsb::$monPdo->query("SET CHARACTER SET utf8");
 	}
 	public function _destruct(){
@@ -330,7 +331,7 @@ class PdoGsb{
  */
  
 	public function majEtatFicheFrais($idVisiteur,$mois,$etat){
-		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
+		$req = "update fichefrais set idEtat = '$etat', dateModif = now() 
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
@@ -348,6 +349,71 @@ class PdoGsb{
         return $fichefrais->fetchAll(PDO::FETCH_OBJ);
             
             
+    }
+
+    /**
+     * Met à jour une ligne frais hors forfait avec le label [REFUSER]
+     * @param $id_frais
+     * @return bool
+     */
+    public function majFraisHorsForfait($id_frais){
+        $q = self::$monPdo->prepare("SELECT libelle FROM lignefraishorsforfait WHERE id=:id");
+        $q->execute(['id' => $id_frais]);
+        $item = $q->fetch(PDO::FETCH_OBJ);
+        $libelle = $item->libelle;
+        $libelle = "[REFUSER]" . $libelle;
+        if(strlen($libelle) > 100){
+            $libelle = substr($libelle, 0, 97) . '...';
+        }
+        $q = self::$monPdo->prepare("UPDATE lignefraishorsforfait SET libelle=:libelle WHERE id=:id");
+        $q->execute(['libelle' => $libelle, 'id' => $id_frais]);
+        return true;
+    }
+
+    /**
+     * Créé une nouvelle fiche frais
+     * @param $visiteur_id
+     * @param $mois
+     */
+    public function creeNouvelleFicheFrais($visiteur_id, $mois){
+        $q = self::$monPdo->prepare("INSERT INTO fichefrais SET idvisiteur=:idvisiteur, mois=:mois, nbjustificatifs=0, montantvalide=0, datemodif=:datemodif, idetat=:etat");
+        $q->execute(['idvisiteur' => $visiteur_id, 'mois' => $mois, 'datemodif' => date('Y-m-d'), 'etat' => 'CR']);
+        $frais = self::$monPdo->query("SELECT * FROM fraisforfait")->fetchAll(PDO::FETCH_OBJ);
+        foreach ($frais as $unFrais){
+            $q = self::$monPdo->prepare("INSERT INTO lignefraisforfait SET idvisiteur=:id_visiteur, mois=:mois, idfraisforfait=:idfraisforfait, quantite=0");
+            $q->execute(['id_visiteur' => $visiteur_id, 'mois' => $mois, 'idfraisforfait' => $unFrais->id]);
+        }
+    }
+
+    /**
+     * Reporte les frais hors forfait
+     * @param $idFrais
+     * @param $visiteur
+     * @param $mois
+     */
+    public function reporterHorsForfait($idFrais, $visiteur, $mois, $libelle, $montant){
+        $moisDisponibles = $this->dernierMoisSaisi($visiteur);
+
+        $month = substr($mois, 4, 2);
+        $year = substr($mois, 0, 4);
+
+        $moisSuivant = date('Ym', strtotime("$year-$month-01 + 1 month"));
+        if($moisDisponibles === $mois){
+            $this->creeNouvelleFicheFrais($visiteur, $moisSuivant);
+        }
+
+        $this->creeNouveauFraisHorsForfait($visiteur, $moisSuivant, $libelle, date('d/m/Y'), $montant);
+        $this->supprimerFraisHorsForfait($idFrais);
+    }
+
+    /**
+     * Valide une fiche de frais
+     * @param $visiteur_id
+     * @param $mois
+     */
+    public function validerFicheFrais($visiteur_id, $mois){
+        $q = self::$monPdo->prepare("UPDATE fichefrais SET idetat='VA' WHERE idvisiteur=:idvisiteur AND mois=:mois");
+        $q->execute(['idvisiteur' => $visiteur_id, 'mois' => $mois]);
     }
 }
 ?>

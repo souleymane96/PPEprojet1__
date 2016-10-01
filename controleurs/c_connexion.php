@@ -14,7 +14,7 @@ switch($action){
                 
 		$mdp = $_POST['mdp'];
                 
-                $mdp = md5($mdp);
+        $mdp = md5($mdp);
                 
 		$utilisateur = $pdo->getInfosVisiteur($login,$mdp);
                 
