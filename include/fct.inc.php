@@ -202,10 +202,18 @@ function nbErreurs(){
 	}
 }
 
+/**
+ * Defini un message Flash 
+ * @param type $msg
+ */
 function setFlash($msg){
     $_SESSION['Flash']['message'] = $msg;
 }
-
+/**
+ * 
+ * Retourne un message flash 
+ * @return type
+ */
 function flash(){
     $message = "";
     if(isset($_SESSION['Flash'])){

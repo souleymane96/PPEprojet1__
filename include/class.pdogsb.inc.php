@@ -17,9 +17,9 @@
 
 class PdoGsb{   		
       	private static $serveur='mysql:host=localhost';
-      	private static $bdd='dbname=aleduc';   		
-      	private static $user='aleduc' ;    		
-      	private static $mdp='ohj4oSie' ;	
+      	private static $bdd='dbname=mba';   		
+      	private static $user='mba' ;    		
+      	private static $mdp='fech3Oph' ;	
 		private static $monPdo;
 		private static $monPdoGsb=null;
 /**
@@ -62,9 +62,11 @@ class PdoGsb{
 		$ligne = $rs->fetch();
 		return $ligne;
 	}
+  
 
     /**
      * Retourne tous les visiteurs
+     * 
      * @return array
      */
     public function getVisiteurs(){
@@ -84,7 +86,13 @@ class PdoGsb{
         $rs->execute(['id' => $id]);
         return $rs->fetch();
     }
-
+/**
+ * Retourne id, nom, et prenom d'un visiteur qui a des fiches de frais
+ * à valider
+ * 
+ * @param type $date
+ * @return type
+ */
     public function getVisiteursParDate($date){
         $req = "SELECT id, nom, prenom FROM utilisateur 
                 LEFT JOIN fichefrais ON fichefrais.idvisiteur = utilisateur.id 
@@ -117,6 +125,11 @@ class PdoGsb{
 		}
 		return $lesLignes; 
 	}
+        /**
+         * Affiche tous les mois qui sont à valider
+         * 
+         * @return type
+         */
         
         public function getLesMoisNonValides(){
             $req = "SELECT mois FROM fichefrais WHERE idetat = 'CR'";

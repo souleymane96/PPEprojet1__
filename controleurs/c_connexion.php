@@ -1,4 +1,9 @@
 <?php
+/**
+ * Connexion d'un visiteur après vérification de son login et son mot de passe
+ * 
+ * Variables : $login, $mdp et $type 
+ */
 if(!isset($_REQUEST['action'])){
 	$_REQUEST['action'] = 'demandeConnexion';
 }
