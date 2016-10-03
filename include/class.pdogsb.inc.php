@@ -132,7 +132,7 @@ class PdoGsb{
          */
         
         public function getLesMoisNonValides(){
-            $req = "SELECT mois FROM fichefrais WHERE idetat = 'CR'";
+            $req = "SELECT mois FROM fichefrais WHERE idetat = 'CR' ORDER BY mois ASC";
             return PdoGsb::$monPdo->query($req)->fetchAll();
         }
 /**
