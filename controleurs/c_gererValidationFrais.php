@@ -63,14 +63,5 @@ switch($action){
         header('location:index.php?uc=gererValidationFrais&action=demandeValiderFrais');
         break;
     }
-    
-    case "listeVisiteurDate":{
-        
-        $visiteurs = $pdo->getVisiteurFraisNonValides($_POST['lstmois']);
-        
-        include "vues/v_listeVisiteurDate.php";
-        
-        break;
-    }
    
 }
