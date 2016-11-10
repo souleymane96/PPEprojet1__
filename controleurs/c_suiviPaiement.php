@@ -5,7 +5,10 @@ $idUtilisateur = $_SESSION['idUtilisateur'];
 switch($action){
 
     case 'demandeSuiviPaiement':
-        echo "bonjour";
+        $fiches = $pdo->getFichesValides();
+
+
+        require "vues/v_demandeSuiviPaiement.php";
         break;
 
 }

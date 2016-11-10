@@ -428,5 +428,15 @@ class PdoGsb{
         $q = self::$monPdo->prepare("UPDATE fichefrais SET idetat='VA' WHERE idvisiteur=:idvisiteur AND mois=:mois");
         $q->execute(['idvisiteur' => $visiteur_id, 'mois' => $mois]);
     }
+
+    /**
+     * Récupère un tableau de mois avec l'état 'VA'
+     * @return array
+     */
+    public function getFichesValides(){
+        $q = self::$monPdo->query("SELECT * FROM fichefrais LEFT JOIN utilisateur ON fichefrais.idvisiteur = utilisateur.id WHERE idetat = 'VA' ORDER BY mois ASC");
+        return $q->fetchAll();
+    }
+
 }
 ?>
