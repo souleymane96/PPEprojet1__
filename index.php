@@ -24,6 +24,10 @@ switch($uc){
 	case 'gererValidationFrais':{
 		include("controleurs/c_gererValidationFrais.php");break;
 	}
+
+    case 'suiviPaiement':{
+        include("controleurs/c_suiviPaiement.php"); break;
+    }
         
  
 }
