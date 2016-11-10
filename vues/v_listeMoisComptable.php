@@ -25,6 +25,10 @@
     </form>
     <?php if(isset($afficherFiche) && $afficherFiche): ?>
         <h2>Les frais hors forfait</h2>
+        <p>
+            Etat : <?= $libEtat ?> depuis le <?= $dateModif ?><br />
+            Montant validé : <?= $montantValide; ?>
+        </p>
         <table style="width:100%">
             <thead>
             <tr>
