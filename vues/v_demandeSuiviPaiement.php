@@ -47,7 +47,7 @@
             </tbody>
         </table>
         <p>
-            <h3><a href="">Télécharger au format PDF</a></h3>
+            <h3><a href="index.php?uc=suiviPaiement&action=generatePDF&fiche=<?= $_GET['fiche'] ?>" style="line-height:28px; padding-left:10px;"><img src="images/pdf.png" width="28px">Télécharger au format PDF</a></h3>
         </p>
     <?php endif; ?>
 </div>
