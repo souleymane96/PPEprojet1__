@@ -59,6 +59,18 @@ function creerPDFFiche($laFiche){
     $pdf->Cell(50, 10, 'Total', 1, 0, 'C');
     $pdf->Cell(50, 10, $total, 1, 0, 'C');
 
+    //Signature
+
+    $pdf->Ln(20);
+    $pdf->SetX($pdf->_getpageformat('A4')[0] - 70);
+    $pdf->Cell(50, 10, utf8_decode('Fait à Paris le ' . date('j') . ' ' . $listeMois[date('n') - 1] . ' ' . date('Y')));
+    $pdf->Ln(10);
+    $pdf->SetX($pdf->_getpageformat('A4')[0] - 70);
+    $pdf->Cell(50, 10, utf8_decode('Vu l\'agent comptable'));
+    $pdf->Ln(10);
+    $pdf->SetX($pdf->_getpageformat('A4')[0] - 70);
+    $pdf->Cell(50, 10, utf8_decode(strtoupper('signature')));
+
     ob_end_clean();
     $pdf->Output();
 }
