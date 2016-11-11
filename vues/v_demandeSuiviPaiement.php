@@ -5,7 +5,7 @@
         <input type="hidden" name="action" value="demandeSuiviPaiement">
         <select name="fiche">
             <?php foreach($fiches as $fiche): ?>
-                <option value="<?= $fiche['mois'] . '-' . $fiche['idvisiteur'] ?>"><?=  substr($fiche['mois'], 4, 2) . ' - ' . $fiche['nom'] . ' ' . $fiche['prenom']; ?></option>
+                <option <?= (isset($_GET['fiche']) && $laFiche['mois'] == $fiche['mois'] && $laFiche['visiteur'] == $fiche['idvisiteur']) ? 'selected' : ''; ?> value="<?= $fiche['mois'] . '-' . $fiche['idvisiteur'] ?>"><?=  substr($fiche['mois'], 4, 2) . ' - ' . $fiche['nom'] . ' ' . $fiche['prenom']; ?></option>
             <?php endforeach; ?>
         </select>
         <button type="submit">Envoyer</button>
@@ -47,7 +47,12 @@
             </tbody>
         </table>
         <p>
-            <h3><a href="index.php?uc=suiviPaiement&action=generatePDF&fiche=<?= $_GET['fiche'] ?>" style="line-height:28px; padding-left:10px;"><img src="images/pdf.png" width="28px">Télécharger au format PDF</a></h3>
+            <h3><a target="_blank" href="index.php?uc=suiviPaiement&action=generatePDF&fiche=<?= $_GET['fiche'] ?>" style="line-height:28px; padding-left:10px;"><img src="images/pdf.png" width="28px">Télécharger au format PDF</a></h3>
+        <form action="index.php?uc=suiviPaiement&action=metEnPaiement" method="POST">
+            <input type="hidden" name="mois" value="<?= $laFiche['mois'] ?>">
+            <input type="hidden" name="visiteur" value="<?= $laFiche['visiteur']; ?>">
+            <button>Mettre en Paiement</button>
+        </form>
         </p>
     <?php endif; ?>
 </div>

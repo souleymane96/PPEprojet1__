@@ -157,7 +157,7 @@ class PdoGsb{
  * @return l'id, le libelle et la quantité sous la forme d'un tableau associatif 
 */
 	public function getLesFraisForfait($idVisiteur, $mois){
-		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, 
+		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, fraisforfait.montant as montant, 
 		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
 		on fraisforfait.id = lignefraisforfait.idfraisforfait
 		where lignefraisforfait.idvisiteur ='$idVisiteur' and lignefraisforfait.mois='$mois' 
@@ -436,6 +436,16 @@ class PdoGsb{
     public function getFichesValides(){
         $q = self::$monPdo->query("SELECT * FROM fichefrais LEFT JOIN utilisateur ON fichefrais.idvisiteur = utilisateur.id WHERE idetat = 'VA' ORDER BY mois ASC");
         return $q->fetchAll();
+    }
+
+    /**
+     * Met une fiche de frais en paiement (état 'MP')
+     * @param $idVisiteur
+     * @param $mois
+     */
+    public function mettreEnPaiement($idVisiteur, $mois){
+        $q = self::$monPdo->prepare("UPDATE fichefrais SET idetat = 'MP' WHERE idvisiteur=:idvisiteur AND mois=:mois");
+        $q->execute(['idvisiteur' => $idVisiteur, 'mois' => $mois]);
     }
 
 }

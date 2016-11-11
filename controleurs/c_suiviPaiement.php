@@ -15,6 +15,8 @@ switch($action){
             if(isset($infos[0]) && isset($infos[1])){
                 $laFiche['forfait'] = $pdo->getLesFraisForfait($infos[1], $infos[0]);
                 $laFiche['hors_forfait'] = $pdo->getLesFraisHorsForfait($infos[1], $infos[0]);
+                $laFiche['mois'] = $infos[0];
+                $laFiche['visiteur'] = $infos[1];
             }else {
                 $laFiche['forfait'] = $laFiche['hors_forfait'] = [];
             }
@@ -33,6 +35,7 @@ switch($action){
         if(isset($_GET['fiche'])){
             $infos = explode('-', $_GET['fiche']);
             if(isset($infos[0]) && isset($infos[1])){
+                $laFiche['visiteur'] = $pdo->getVisiteur($infos[1]);
                 $laFiche['forfait'] = $pdo->getLesFraisForfait($infos[1], $infos[0]);
                 $laFiche['hors_forfait'] = $pdo->getLesFraisHorsForfait($infos[1], $infos[0]);
             }else {
@@ -47,5 +50,11 @@ switch($action){
         }
         require "vues/generatePDF.php";
         creerPDFFiche($laFiche);
+        break;
+
+    case 'metEnPaiement':
+        $pdo->mettreEnPaiement($_POST['visiteur'], $_POST['mois']);
+        setFlash("La fiche a bien été mise en paiement");
+        header('location:index.php?uc=suiviPaiement&action=demandeSuiviPaiement');
         break;
 }
