@@ -22,6 +22,11 @@ switch($action){
         }
         if($part === "2"){
             $visiteurs = $pdo->getVisiteursParDate($_GET['lstmois']);
+            $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($_GET['lstvisiteurs'],$_GET['lstmois']);
+            $libEtat = $lesInfosFicheFrais['libEtat'];
+            $montantValide = $lesInfosFicheFrais['montantValide'];
+            $dateModif =  $lesInfosFicheFrais['dateModif'];
+            $dateModif =  dateAnglaisVersFrancais($dateModif);
         }
         if(isset($_GET['lstvisiteurs'])){
             $afficherFiche = true;

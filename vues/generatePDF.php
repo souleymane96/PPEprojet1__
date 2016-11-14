@@ -69,8 +69,8 @@ function creerPDFFiche($laFiche){
     $pdf->Cell(50, 10, utf8_decode('Vu l\'agent comptable'));
     $pdf->Ln(10);
     $pdf->SetX($pdf->_getpageformat('A4')[0] - 70);
-    //$pdf->Cell(50, 10, utf8_decode(strtoupper('signature')));
-    $pdf->Image("images/signature.png",90,250,93,36);
+    $pdf->Cell(50, 10, utf8_decode(strtoupper('signature')));
+    //$pdf->Image("images/signature.png",90,250,93,36);
 
     ob_end_clean();
     $pdf->Output();

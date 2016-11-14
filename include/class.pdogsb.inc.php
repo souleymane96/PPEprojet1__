@@ -96,7 +96,7 @@ class PdoGsb{
     public function getVisiteursParDate($date){
         $req = "SELECT id, nom, prenom FROM utilisateur 
                 LEFT JOIN fichefrais ON fichefrais.idvisiteur = utilisateur.id 
-                WHERE idetat = 'CR' AND mois = :date";
+                WHERE idetat = 'CL' AND mois = :date";
         $rs = self::$monPdo->prepare($req);
         $rs->execute(['date' => $date]);
         return $rs->fetchAll(PDO::FETCH_OBJ);
@@ -132,7 +132,7 @@ class PdoGsb{
          */
         
         public function getLesMoisNonValides(){
-            $req = "SELECT mois FROM fichefrais WHERE idetat = 'CR' ORDER BY mois ASC";
+            $req = "SELECT mois FROM fichefrais WHERE idetat = 'CL' ORDER BY mois ASC";
             return PdoGsb::$monPdo->query($req)->fetchAll();
         }
 /**
