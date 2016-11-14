@@ -38,6 +38,7 @@ switch($action){
                 $laFiche['visiteur'] = $pdo->getVisiteur($infos[1]);
                 $laFiche['forfait'] = $pdo->getLesFraisForfait($infos[1], $infos[0]);
                 $laFiche['hors_forfait'] = $pdo->getLesFraisHorsForfait($infos[1], $infos[0]);
+                $vehicules = $pdo->getLesPuissances();
             }else {
                 $laFiche['forfait'] = $laFiche['hors_forfait'] = [];
             }
@@ -49,7 +50,7 @@ switch($action){
             }
         }
         require "vues/generatePDF.php";
-        creerPDFFiche($laFiche);
+        creerPDFFiche($laFiche, $vehicules);
         break;
 
     case 'metEnPaiement':

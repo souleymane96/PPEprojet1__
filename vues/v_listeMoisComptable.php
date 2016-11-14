@@ -74,10 +74,20 @@
             </thead>
             <tbody>
                 <?php foreach($fiche['forfait'] as $ficheF): ?>
+                    <?php if($ficheF['id_puissance_vehicule'] !== null): ?>
+                    <tr>
+                        <td><?php echo $ficheF['libelle']; ?></td>
+                        <td>
+                            <?php echo $pdo->getPuissanceVehicule($ficheF['id_puissance_vehicule']); ?>:
+                            <?php echo $ficheF['quantite']; ?>
+                        </td>
+                    </tr>
+                    <?php else: ?>
                     <tr>
                         <td><?php echo $ficheF['libelle']; ?></td>
                         <td><input type="text" name="frais[<?php echo $ficheF['idfrais']; ?>]" value="<?php echo $ficheF['quantite']; ?>"></td>
                     </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
 
                 <tr>

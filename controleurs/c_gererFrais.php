@@ -15,7 +15,14 @@ switch($action){
 	case 'validerMajFraisForfait':{
 		$lesFrais = $_REQUEST['lesFrais'];
 		if(lesQteFraisValides($lesFrais)){
-	  	 	$pdo->majFraisForfait($idUtilisateur,$mois,$lesFrais);
+                        if(isset($_POST['lesFrais']['km'])){
+                            $pdo->addKm($_POST['lesFrais']['km'], $_POST['puissance_qte'], $mois, $idUtilisateur);
+                            unset($lesFrais['km']);
+                            $pdo->majFraisForfait($idUtilisateur,$mois,$lesFrais);
+                        }else{
+                            $pdo->majFraisForfait($idUtilisateur,$mois,$lesFrais);
+                        }
+	  	 	
 		}
 		else{
 			ajouterErreur("Les valeurs des frais doivent être numériques");
@@ -44,6 +51,7 @@ switch($action){
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUtilisateur,$mois);
 $lesFraisForfait= $pdo->getLesFraisForfait($idUtilisateur,$mois);
+$puissances = $pdo->getLesPuissances();
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
 

@@ -157,9 +157,9 @@ class PdoGsb{
  * @return l'id, le libelle et la quantité sous la forme d'un tableau associatif 
 */
 	public function getLesFraisForfait($idVisiteur, $mois){
-		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, fraisforfait.montant as montant, 
+		$req = "select lignefraisforfait.id_puissance_vehicule, fraisforfait.id as idfrais, fraisforfait.libelle as libelle, fraisforfait.montant as montant, 
 		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
-		on fraisforfait.id = lignefraisforfait.idfraisforfait
+		on fraisforfait.id = lignefraisforfait.idfraisforfait 
 		where lignefraisforfait.idvisiteur ='$idVisiteur' and lignefraisforfait.mois='$mois' 
 		order by lignefraisforfait.idfraisforfait";	
 		$res = PdoGsb::$monPdo->query($req);
@@ -447,6 +447,32 @@ class PdoGsb{
         $q = self::$monPdo->prepare("UPDATE fichefrais SET idetat = 'MP' WHERE idvisiteur=:idvisiteur AND mois=:mois");
         $q->execute(['idvisiteur' => $idVisiteur, 'mois' => $mois]);
     }
+    
+    /**
+     * Récupère les puissances des véhicules
+     * @return array
+     */
+    public function getLesPuissances(){
+        $q = self::$monPdo->query("SELECT * FROM puissance_vehicule");
+        return $q->fetchAll();
+    }
 
+    /**
+     * Ajoute la puissance du véhicule
+     * @param type $idFrais
+     * @param type $qte
+     */
+    public function addKm($idFrais, $qte, $mois, $idvisiteur){
+        $sql = "UPDATE lignefraisforfait SET id_puissance_vehicule=:idfrais, quantite=:qte WHERE mois=:mois AND idvisiteur=:idvisiteur AND idfraisforfait='km'";
+        $q = self::$monPdo->prepare($sql);
+        $q->execute(['idfrais' => $idFrais, 'qte' => $qte, 'mois' => $mois, 'idvisiteur' => $idvisiteur]);
+        
+    }
+    
+    public function getPuissanceVehicule($id){
+        $q = self::$monPdo->prepare("SELECT libelle FROM puissance_vehicule WHERE id=:id");
+        $q->execute(['id' => $id]);
+        return $q->fetch()['libelle'];
+    }
 }
 ?>

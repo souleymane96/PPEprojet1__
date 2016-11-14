@@ -1,5 +1,5 @@
 <?php
-function creerPDFFiche($laFiche){
+function creerPDFFiche($laFiche, $vehicules){
     $parts = explode('-', $_GET['fiche']);
     $listeMois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
     $mois = $parts[0];
@@ -30,12 +30,22 @@ function creerPDFFiche($laFiche){
     $pdf->Cell(40, 10, "Total", 1, 0, 'C');
     $total = 0;
     foreach($laFiche['forfait'] as $forfait){
-        $pdf->Ln(10);
-        $pdf->Cell(40, 10, utf8_decode(ucfirst($forfait['libelle'])), 1, 0, 'C');
-        $pdf->Cell(40, 10, $forfait['quantite'], 1, 0, 'C');
-        $pdf->Cell(40, 10, $forfait['montant'], 1, 0, 'C');
-        $pdf->Cell(40, 10, $forfait['montant'] * $forfait['quantite'], 1, 0, 'C');
-        $total += $forfait['montant'] * $forfait['quantite'];
+        if($forfait['id_puissance_vehicule'] !== null){
+            $pdf->Ln(10);
+            $pdf->Cell(40, 10, utf8_decode(ucfirst($forfait['libelle'])), 1, 0, 'C');
+            $pdf->Cell(40, 10, $forfait['quantite'], 1, 0, 'C');
+            $v = $vehicules[$forfait['id_puissance_vehicule']]['montant'];
+            $pdf->Cell(40, 10, $v, 1, 0, 'C');
+            $pdf->Cell(40, 10, $forfait['quantite'] * $v, 1, 0, 'C');
+            $total += $forfait['quantite'] * $v;
+        }else{
+            $pdf->Ln(10);
+            $pdf->Cell(40, 10, utf8_decode(ucfirst($forfait['libelle'])), 1, 0, 'C');
+            $pdf->Cell(40, 10, $forfait['quantite'], 1, 0, 'C');
+            $pdf->Cell(40, 10, $forfait['montant'], 1, 0, 'C');
+            $pdf->Cell(40, 10, $forfait['montant'] * $forfait['quantite'], 1, 0, 'C');
+            $total += $forfait['montant'] * $forfait['quantite'];
+        }  
     }
 
     $pdf->Ln(20);

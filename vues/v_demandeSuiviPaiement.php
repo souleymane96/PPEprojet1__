@@ -39,10 +39,17 @@
             </thead>
             <tbody>
             <?php foreach($laFiche['forfait'] as $value): ?>
+                <?php if($value['id_puissance_vehicule'] !== null): ?>
+                <tr>
+                    <td><?= $value['libelle'] ?></td>
+                    <td><?php echo $pdo->getPuissanceVehicule($value['id_puissance_vehicule']); ?>: <?= $value['quantite'] ?></td>
+                </tr>
+                <?php else: ?>
                 <tr>
                     <td><?= $value['libelle'] ?></td>
                     <td><?= $value['quantite'] ?></td>
                 </tr>
+                <?php endif; ?>
             <?php endforeach; ?>
             </tbody>
         </table>
